@@ -1,8 +1,9 @@
 // 回答途中の一時保存（sessionStorage、ブラウザ内のみ。サーバーへ送信しない）
 import type { Answers, TypeResult } from "./diagnosis"
 
-const PROGRESS_KEY = "narragram:progress"
-const RESULT_KEY = "narragram:result"
+// 診断ごとに保存領域を分ける
+const progressKey = (slug: string) => `narragram:${slug}:progress`
+const resultKey = (slug: string) => `narragram:${slug}:result`
 
 export type Progress = {
   itemBankVersion: string
@@ -34,10 +35,15 @@ const write = (key: string, value: unknown) => {
 }
 
 /** 設問バンクのバージョンが変わった進捗は破棄する */
-export const loadProgress = (itemBankVersion: string): Progress | null => {
-  const p = read<Progress>(PROGRESS_KEY)
+export const loadProgress = (
+  slug: string,
+  itemBankVersion: string
+): Progress | null => {
+  const p = read<Progress>(progressKey(slug))
   return p?.itemBankVersion === itemBankVersion ? p : null
 }
-export const saveProgress = (p: Progress | null) => write(PROGRESS_KEY, p)
-export const loadResult = () => read<StoredResult>(RESULT_KEY)
-export const saveResult = (r: StoredResult | null) => write(RESULT_KEY, r)
+export const saveProgress = (slug: string, p: Progress | null) =>
+  write(progressKey(slug), p)
+export const loadResult = (slug: string) => read<StoredResult>(resultKey(slug))
+export const saveResult = (slug: string, r: StoredResult | null) =>
+  write(resultKey(slug), r)

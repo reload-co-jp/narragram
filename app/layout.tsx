@@ -11,9 +11,9 @@ const serif = Shippori_Mincho({
 const sans = Noto_Sans_JP({ preload: false, variable: "--font-noto" })
 
 export const metadata = {
-  title: "Narragram｜あなたが転生したら、どんな冒険者になる？",
+  title: "Narragram｜物語の選択から、あなたを読み解く",
   description:
-    "ダンジョンでの選択から読み解く、あなたの異世界冒険スタイル。登録不要・全15問。エンターテインメント目的の診断です。",
+    "物語の中で選んだ行動から、あなたのスタイルを描き出す診断集。登録不要。エンターテインメント目的の診断です。",
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {

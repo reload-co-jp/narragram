@@ -1,0 +1,20 @@
+{
+  "slug": "dungeon",
+  "eyebrow": "ISEKAI DUNGEON DIAGNOSIS",
+  "title": "あなたが転生したら、どんな冒険者になる？",
+  "lead": "選択から読み解く、あなたの異世界冒険スタイル。",
+  "estimate": "約3分",
+  "image": "/diagnoses/dungeon/hero.svg",
+  "startLabel": "冒険を始める",
+  "intro": {
+    "eyebrow": "PROLOGUE",
+    "heading": "目覚めると、そこは見知らぬ世界だった。",
+    "paragraphs": [
+      "石造りの広間に、淡く光る魔法陣。気づけばあなたは、冒険者として新しい生を受けていた。目の前には、まだ誰も踏破していないダンジョンの入口が口を開けている。",
+      "これから出会う場面で、あなたならどう動くかを選んでください。どちらの選択肢にも正解・不正解はありません。直感で選んで大丈夫です。"
+    ],
+    "cta": "ダンジョンへ踏み出す"
+  },
+  "resultLabel": "あなたの冒険者タイプ",
+  "styleHeading": "あなたの冒険スタイル"
+}

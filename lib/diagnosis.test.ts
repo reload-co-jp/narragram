@@ -1,7 +1,4 @@
 import { describe, expect, it } from "vitest"
-import itemBankJson from "@/data/items.json"
-import rulesJson from "@/data/type-rules.json"
-import typesJson from "@/data/adventurer-types.json"
 import {
   Answers,
   assignType,
@@ -12,10 +9,9 @@ import {
   scoreBigFive,
   TypeRules,
 } from "./diagnosis"
+import { diagnoses, getDiagnosis } from "./diagnoses"
 
-const bank = itemBankJson as ItemBank
-const rules = rulesJson as TypeRules
-const types = typesJson.types
+const { bank, rules, types } = getDiagnosis("dungeon")!
 const factors: FactorId[] = [
   "openness",
   "conscientiousness",
@@ -26,25 +22,40 @@ const factors: FactorId[] = [
 const all = (choiceId: string): Answers =>
   Object.fromEntries(bank.items.map((i) => [i.id, choiceId]))
 
-describe("data integrity", () => {
+describe("dungeon data", () => {
   it("has 15 candidate items, none counted in Big Five yet", () => {
     expect(bank.items).toHaveLength(15)
     expect(bank.items.every((i) => !i.scoring.includeInBigFiveScore)).toBe(true)
   })
-
-  it("rules only reference known items, choices and types", () => {
-    const typeIds = new Set(types.map((t) => t.id))
-    for (const [itemId, byChoice] of Object.entries(rules.weights)) {
-      const item = bank.items.find((i) => i.id === itemId)
-      expect(item, itemId).toBeDefined()
-      for (const [choiceId, w] of Object.entries(byChoice)) {
-        expect(item!.choices.map((c) => c.id)).toContain(choiceId)
-        for (const t of Object.keys(w)) expect(typeIds.has(t), t).toBe(true)
-      }
-    }
-    expect(typeIds.has(rules.fallbackTypeId)).toBe(true)
-  })
 })
+
+describe.each(diagnoses.map((d) => [d.meta.slug, d] as const))(
+  "data integrity: %s",
+  (slug, { bank, rules, types }) => {
+    it("slug is unique and URL-safe", () => {
+      expect(slug).toMatch(/^[a-z0-9-]+$/)
+      expect(diagnoses.filter((d) => d.meta.slug === slug)).toHaveLength(1)
+    })
+
+    it("item ids are unique", () => {
+      const ids = bank.items.map((i) => i.id)
+      expect(new Set(ids).size).toBe(ids.length)
+    })
+
+    it("rules only reference known items, choices and types", () => {
+      const typeIds = new Set(types.map((t) => t.id))
+      for (const [itemId, byChoice] of Object.entries(rules.weights)) {
+        const item = bank.items.find((i) => i.id === itemId)
+        expect(item, itemId).toBeDefined()
+        for (const [choiceId, w] of Object.entries(byChoice)) {
+          expect(item!.choices.map((c) => c.id)).toContain(choiceId)
+          for (const t of Object.keys(w)) expect(typeIds.has(t), t).toBe(true)
+        }
+      }
+      expect(typeIds.has(rules.fallbackTypeId)).toBe(true)
+    })
+  }
+)
 
 describe("sanitizeAnswers", () => {
   it("drops unknown item ids and choice ids", () => {

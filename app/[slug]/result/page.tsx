@@ -1,11 +1,10 @@
 import { ClientOnly } from "@/components/client-only"
 import { Result } from "@/components/result"
+import type { SlugParams } from "../layout"
 
-export const metadata = { title: "冒険の記録｜Narragram" }
-
-const ResultPage = () => (
+const ResultPage = async ({ params }: SlugParams) => (
   <ClientOnly fallback={<p className="muted">読み込み中…</p>}>
-    <Result />
+    <Result slug={(await params).slug} />
   </ClientOnly>
 )
 

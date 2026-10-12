@@ -3,14 +3,17 @@
 // 回答本文・個人を特定できる情報は payload に含めない。
 
 type Events = {
-  quiz_started: Record<string, never>
+  quiz_started: Record<never, never>
   question_answered: { itemId: string; choiceId: string }
   quiz_completed: { typeId: string; ruleVersion: string }
   quiz_abandoned: { itemId: string }
   result_shared: { typeId: string; method: "share" | "copy" }
 }
 
-export const track = <K extends keyof Events>(event: K, payload: Events[K]) => {
+export const track = <K extends keyof Events>(
+  event: K,
+  payload: Events[K] & { diagnosis: string }
+) => {
   if (process.env.NODE_ENV === "development") {
     console.debug("[track]", event, payload)
   }

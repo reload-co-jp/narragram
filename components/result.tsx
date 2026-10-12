@@ -1,30 +1,14 @@
 "use client"
 import { useState } from "react"
 import Link from "next/link"
-import itemBankJson from "@/data/items.json"
-import typesJson from "@/data/adventurer-types.json"
-import bigFiveJson from "@/data/big-five.json"
-import {
-  AdventurerType,
-  chosenBehaviors,
-  FactorId,
-  ItemBank,
-  scoreBigFive,
-} from "@/lib/diagnosis"
+import { AdventurerType, chosenBehaviors, scoreBigFive } from "@/lib/diagnosis"
+import { Diagnosis, getDiagnosis } from "@/lib/diagnoses"
 import { loadResult, saveResult, StoredResult } from "@/lib/session"
 import { track } from "@/lib/analytics"
 
-const bank = itemBankJson as ItemBank
-const types: AdventurerType[] = typesJson.types
-const factors = bigFiveJson.factors as {
-  id: FactorId
-  name: string
-  en: string
-  description: string
-}[]
-
-const findType = (id: string | null) =>
-  types.find((t) => t.id === id) ?? types.find((t) => t.id === "wanderer")!
+const findType = ({ types, rules }: Diagnosis, id: string | null) =>
+  types.find((t) => t.id === id) ??
+  types.find((t) => t.id === rules.fallbackTypeId)!
 
 const TypeHeader = ({
   type,
@@ -45,7 +29,7 @@ const Notes = ({ versions }: { versions?: string }) => (
   <aside className="notice stack" aria-label="診断の性質と限界">
     <p>本診断はエンターテインメント目的です。医療・臨床診断ではありません。</p>
     <p>
-      冒険者タイプは物語上の仮分類であり、心理学的に検証された類型ではありません。性格傾向の分析は研究・検証段階のもので、設問と採点の妥当性は確認されていません。
+      タイプは物語上の仮分類であり、心理学的に検証された類型ではありません。性格傾向の分析は研究・検証段階のもので、設問と採点の妥当性は確認されていません。
     </p>
     {versions && <p>{versions}</p>}
     <p>
@@ -54,34 +38,42 @@ const Notes = ({ versions }: { versions?: string }) => (
   </aside>
 )
 
-const SharedView = ({ type }: { type: AdventurerType }) => (
+const SharedView = ({ d, type }: { d: Diagnosis; type: AdventurerType }) => (
   <article className="stack fade-in">
-    <TypeHeader type={type} label="共有された冒険スタイル" />
+    <TypeHeader type={type} label={`共有された結果｜${d.meta.title}`} />
     <section className="panel">
       <p>{type.description}</p>
     </section>
     <p style={{ textAlign: "center" }}>
-      <Link href="/intro/" className="btn">
-        自分も冒険してみる
+      <Link href={`/${d.meta.slug}/intro/`} className="btn">
+        自分も診断してみる
       </Link>
     </p>
     <Notes />
   </article>
 )
 
-const ShareButton = ({ typeId }: { typeId: string }) => {
+const ShareButton = ({ d, typeId }: { d: Diagnosis; typeId: string }) => {
   const [message, setMessage] = useState("")
   const share = async () => {
     // 共有URLにはタイプIDのみを含める。回答や因子情報は含めない。
-    const url = `${location.origin}/result/?type=${encodeURIComponent(typeId)}`
-    const text = `異世界での私の冒険スタイルは「${findType(typeId).name}」でした`
+    const url = `${location.origin}/${d.meta.slug}/result/?type=${encodeURIComponent(typeId)}`
+    const text = `「${d.meta.title}」の結果は「${findType(d, typeId).name}」でした`
     try {
       if (navigator.share) {
         await navigator.share({ title: "Narragram", text, url })
-        track("result_shared", { typeId, method: "share" })
+        track("result_shared", {
+          diagnosis: d.meta.slug,
+          typeId,
+          method: "share",
+        })
       } else {
         await navigator.clipboard.writeText(`${text} ${url}`)
-        track("result_shared", { typeId, method: "copy" })
+        track("result_shared", {
+          diagnosis: d.meta.slug,
+          typeId,
+          method: "copy",
+        })
         setMessage("共有用のURLをコピーしました")
       }
     } catch {
@@ -100,9 +92,16 @@ const ShareButton = ({ typeId }: { typeId: string }) => {
   )
 }
 
-const OwnResultView = ({ stored }: { stored: StoredResult }) => {
+const OwnResultView = ({
+  d,
+  stored,
+}: {
+  d: Diagnosis
+  stored: StoredResult
+}) => {
+  const { bank, types, factors, meta } = d
   const { result, answers } = stored
-  const type = findType(result.primaryTypeId)
+  const type = findType(d, result.primaryTypeId)
   const secondary = result.secondaryTypeId
     ? types.find((t) => t.id === result.secondaryTypeId)
     : undefined
@@ -120,12 +119,12 @@ const OwnResultView = ({ stored }: { stored: StoredResult }) => {
         label={
           result.isComposite && secondary
             ? `複合タイプ：${type.name} × ${secondary.name}`
-            : "あなたの冒険者タイプ"
+            : meta.resultLabel
         }
       />
 
       <section className="panel stack">
-        <h2>あなたの冒険スタイル</h2>
+        <h2>{meta.styleHeading}</h2>
         <p>{type.description}</p>
         {secondary && !result.isComposite && (
           <p className="muted">
@@ -138,7 +137,7 @@ const OwnResultView = ({ stored }: { stored: StoredResult }) => {
         <section className="panel stack">
           <h2>今回の選択に見られた行動</h2>
           <p className="muted">
-            ダンジョンの各場面で、あなたは次のような行動を選びました。
+            各場面で、あなたは次のような行動を選びました。
           </p>
           <ul className="chip-list">
             {behaviors.map((b) => (
@@ -152,7 +151,7 @@ const OwnResultView = ({ stored }: { stored: StoredResult }) => {
         <h2>性格特性の5つの観点（参考）</h2>
         <p className="muted">
           心理学で広く用いられる Big Five
-          の考え方を参考にしています。現在の設問は、各因子を測定できるかを検証している段階です。そのため、因子の得点や高低は表示していません。冒険者タイプは、この5因子とは別の物語上の分類です。
+          の考え方を参考にしています。現在の設問は、各因子を測定できるかを検証している段階です。そのため、因子の得点や高低は表示していません。結果のタイプは、この5因子とは別の物語上の分類です。
         </p>
         <ul className="factor-list">
           {factors.map((f) => {
@@ -182,7 +181,7 @@ const OwnResultView = ({ stored }: { stored: StoredResult }) => {
       </section>
 
       <section className="panel stack">
-        <h2>冒険での強み</h2>
+        <h2>強み</h2>
         <ul>
           {type.strengths.map((s) => (
             <li key={s}>{s}</li>
@@ -198,14 +197,14 @@ const OwnResultView = ({ stored }: { stored: StoredResult }) => {
 
       <div className="nav-row">
         <Link
-          href="/quiz/"
+          href={`/${meta.slug}/quiz/`}
           className="btn btn-ghost"
-          onClick={() => saveResult(null)}
+          onClick={() => saveResult(meta.slug, null)}
         >
           診断をやり直す
         </Link>
         <div style={{ flex: 1, display: "grid" }}>
-          <ShareButton typeId={type.id} />
+          <ShareButton d={d} typeId={type.id} />
         </div>
       </div>
 
@@ -216,22 +215,23 @@ const OwnResultView = ({ stored }: { stored: StoredResult }) => {
   )
 }
 
-export const Result = () => {
+export const Result = ({ slug }: { slug: string }) => {
+  const d = getDiagnosis(slug)!
   const sharedTypeId = new URLSearchParams(location.search).get("type")
-  if (sharedTypeId) return <SharedView type={findType(sharedTypeId)} />
+  if (sharedTypeId) return <SharedView d={d} type={findType(d, sharedTypeId)} />
 
-  const stored = loadResult()
+  const stored = loadResult(slug)
   if (!stored?.result) {
     return (
       <div className="panel stack" role="alert">
         <p>
           表示できる結果が見つかりませんでした。結果はこのタブの中だけに一時保存されます。
         </p>
-        <Link href="/intro/" className="btn">
-          冒険を始める
+        <Link href={`/${slug}/intro/`} className="btn">
+          {d.meta.startLabel}
         </Link>
       </div>
     )
   }
-  return <OwnResultView stored={stored} />
+  return <OwnResultView d={d} stored={stored} />
 }

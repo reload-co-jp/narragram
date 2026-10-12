@@ -2,24 +2,16 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import itemBankJson from "@/data/items.json"
-import rulesJson from "@/data/type-rules.json"
-import typesJson from "@/data/adventurer-types.json"
-import {
-  assignType,
-  ItemBank,
-  sanitizeAnswers,
-  TypeRules,
-} from "@/lib/diagnosis"
+import { assignType, sanitizeAnswers } from "@/lib/diagnosis"
+import { Diagnosis, getDiagnosis } from "@/lib/diagnoses"
 import { loadProgress, Progress, saveProgress, saveResult } from "@/lib/session"
 import { track } from "@/lib/analytics"
 
-const bank = itemBankJson as ItemBank
-const total = bank.items.length
 const pad = (n: number) => String(n).padStart(2, "0")
 
-const initialProgress = (): Progress => {
-  const saved = loadProgress(bank.version)
+const initialProgress = ({ meta, bank }: Diagnosis): Progress => {
+  const total = bank.items.length
+  const saved = loadProgress(meta.slug, bank.version)
   const index = Math.min(Math.max(Number(saved?.index) || 0, 0), total - 1)
   return {
     itemBankVersion: bank.version,
@@ -28,23 +20,27 @@ const initialProgress = (): Progress => {
   }
 }
 
-export const Quiz = () => {
+export const Quiz = ({ slug }: { slug: string }) => {
+  const diagnosis = getDiagnosis(slug)!
+  const { bank, rules, types } = diagnosis
+  const total = bank.items.length
   const router = useRouter()
-  const [progress, setProgress] = useState(initialProgress)
+  const [progress, setProgress] = useState(() => initialProgress(diagnosis))
   const headingRef = useRef<HTMLHeadingElement>(null)
   const isFirstRender = useRef(true)
   const finished = useRef(false)
   const item = bank.items[progress.index]
 
   useEffect(() => {
-    if (Object.keys(progress.answers).length === 0) track("quiz_started", {})
+    if (Object.keys(progress.answers).length === 0)
+      track("quiz_started", { diagnosis: slug })
     // 初回のみ
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    saveProgress(progress)
-  }, [progress])
+    saveProgress(slug, progress)
+  }, [slug, progress])
 
   // 設問切り替え時、スクリーンリーダー向けに見出しへフォーカスを移す
   useEffect(() => {
@@ -58,11 +54,12 @@ export const Quiz = () => {
   useEffect(() => {
     if (!item) return
     const onLeave = () => {
-      if (!finished.current) track("quiz_abandoned", { itemId: item.id })
+      if (!finished.current)
+        track("quiz_abandoned", { diagnosis: slug, itemId: item.id })
     }
     window.addEventListener("pagehide", onLeave)
     return () => window.removeEventListener("pagehide", onLeave)
-  }, [item])
+  }, [item, slug])
 
   if (!item) {
     return (
@@ -81,7 +78,7 @@ export const Quiz = () => {
       ...p,
       answers: { ...p.answers, [item.id]: choiceId },
     }))
-    track("question_answered", { itemId: item.id, choiceId })
+    track("question_answered", { diagnosis: slug, itemId: item.id, choiceId })
   }
 
   const go = (delta: number) =>
@@ -89,23 +86,19 @@ export const Quiz = () => {
 
   const finish = () => {
     finished.current = true
-    const result = assignType(
-      progress.answers,
-      bank,
-      rulesJson as TypeRules,
-      typesJson.types
-    )
-    saveResult({
+    const result = assignType(progress.answers, bank, rules, types)
+    saveResult(slug, {
       answers: progress.answers,
       result,
       completedAt: new Date().toISOString(),
     })
-    saveProgress(null)
+    saveProgress(slug, null)
     track("quiz_completed", {
+      diagnosis: slug,
       typeId: result.primaryTypeId,
       ruleVersion: result.ruleVersion,
     })
-    router.push("/result/")
+    router.push(`/${slug}/result/`)
   }
 
   return (
