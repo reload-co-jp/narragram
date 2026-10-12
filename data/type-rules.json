@@ -1,0 +1,25 @@
+{
+  "version": "0.1.0",
+  "status": "provisional",
+  "note": "冒険者タイプ判定用の仮ルール。物語上の演出であり、Big Five得点とは無関係。重みは設計者の仮説で未検証。",
+  "minAnsweredItems": 10,
+  "compositeThreshold": 0.15,
+  "fallbackTypeId": "wanderer",
+  "weights": {
+    "O1": { "A": { "explorer": 1 }, "B": { "pioneer": 1 } },
+    "O2": { "A": { "explorer": 1 }, "B": { "strategist": 1 } },
+    "O3": { "A": { "explorer": 1 }, "B": { "observer": 1 } },
+    "C1": { "A": { "strategist": 1 }, "B": { "pioneer": 1 } },
+    "C2": { "A": { "strategist": 1 }, "B": { "guardian": 1 } },
+    "C3": { "A": { "strategist": 1 }, "B": { "pioneer": 1 } },
+    "E1": { "A": { "pioneer": 1 }, "B": { "observer": 1 } },
+    "E2": { "A": { "pioneer": 1 }, "B": { "guardian": 1 } },
+    "E3": { "A": { "explorer": 1 }, "B": { "guardian": 1 } },
+    "A1": { "A": { "guardian": 1 }, "B": { "strategist": 1 } },
+    "A2": { "A": { "guardian": 1 }, "B": { "strategist": 1 } },
+    "A3": { "A": { "guardian": 1 }, "B": { "observer": 1 } },
+    "N1": { "A": { "observer": 1 }, "B": { "explorer": 1 } },
+    "N2": { "A": { "observer": 1 }, "B": { "pioneer": 1 } },
+    "N3": { "A": { "observer": 1 }, "B": { "pioneer": 1 } }
+  }
+}

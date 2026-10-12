@@ -1,94 +1,70 @@
-# Next.js Static Site Template
+# Narragram
 
-Next.js 16 + React 19 + TypeScript を使用した静的サイト生成のテンプレートリポジトリです。GitHub Pages へのデプロイが自動化されています。
+異世界転生・ダンジョン型の冒険スタイル診断（MVP）。仕様は `spec/coding_agent.md`。
 
-## 技術スタック
+> 冒険者タイプはエンターテインメント上の仮分類です。Big Five を参考にしていますが、設問と採点は**未検証**です。医療・臨床診断ではありません。
 
-- **Next.js** 16 - App Router / Static Export
-- **React** 19
-- **TypeScript** 5
-- **ESLint** 9 - Flat Config
-- **Prettier** 3
+## 起動
 
-## このテンプレートの使い方
-
-1. **「Use this template」ボタン**をクリックして新しいリポジトリを作成
-2. リポジトリをクローン
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-   cd YOUR_REPO
-   ```
-3. 依存関係をインストール
-   ```bash
-   pnpm install
-   ```
-4. 開発サーバーを起動
-   ```bash
-   pnpm dev
-   ```
-
-## セットアップ後にやること
-
-### 1. `next.config.js` の修正
-
-`basePath` をリポジトリ名に変更してください：
-
-```js
-basePath: process.env.NODE_ENV === "production" ? "/YOUR_REPO_NAME" : "",
+```bash
+pnpm install
+pnpm dev        # http://localhost:3000
+pnpm test       # Vitest
+pnpm lint
+pnpm typecheck
+pnpm build      # 静的書き出し（/out）。main への push で GitHub Pages にデプロイ
 ```
 
-### 2. `app/layout.tsx` の修正
-
-メタデータとサイト情報を更新してください：
-
-```tsx
-export const metadata: Metadata = {
-  title: "Your Site Title",
-  description: "Your site description",
-}
-```
-
-### 3. GitHub Pages の設定
-
-1. リポジトリの **Settings** → **Pages** へ移動
-2. **Source** を「GitHub Actions」に設定
-
-## ディレクトリ構成
+## 構成
 
 ```
-.
-├── app/
-│   ├── layout.tsx      # ルートレイアウト
-│   ├── page.tsx        # ホームページ
-│   └── reset.css       # CSSリセット
-├── .github/
-│   └── workflows/
-│       ├── lint.yml    # リント自動実行
-│       └── deploy.yml  # GitHub Pages 自動デプロイ
-├── next.config.js      # Next.js 設定
-├── tsconfig.json       # TypeScript 設定
-├── eslint.config.mjs   # ESLint 設定
-└── .prettierrc.json    # Prettier 設定
+app/
+  page.tsx           トップ
+  intro/page.tsx     異世界転生の導入
+  quiz/page.tsx      診断（1画面1問）
+  result/page.tsx    結果（?type=<id> で共有ビュー）
+  about/page.tsx     この診断について・プライバシー
+components/          quiz.tsx / result.tsx / hero-art.tsx など
+lib/diagnosis.ts     判定ロジック（純粋関数）とテスト
+lib/session.ts       sessionStorage での一時保存
+lib/analytics.ts     計測イベント定義（現在は外部送信なし）
+data/                設問・タイプ・採点ルール（下記）
+public/types/        タイプ画像（仮のSVG）
 ```
 
-## スクリプト
+回答はブラウザ内でのみ処理し、サーバーへ送信しません。共有URLに含まれるのはタイプIDのみです。
 
-| コマンド | 説明 |
-|---------|------|
-| `pnpm dev` | 開発サーバーを起動 |
-| `pnpm build` | 静的サイトをビルド（`/out` に出力） |
-| `pnpm lint` | ESLint を実行 |
-| `pnpm format` | Prettier でコードをフォーマット |
-| `pnpm typecheck` | TypeScript の型チェック |
+## 設問の編集 — `data/items.json`
 
-## 機能
+- `items[]` の順に出題されます。`id` は採点ルール・保存データと紐づくため、文面を変えても安易に変更しないでください。
+- `scene`（場面タイトル）、`prompt`（状況）、`question`、`choices[].text` が画面表示。
+- `choices[].behavior` は結果画面「今回の選択に見られた行動」に出る行動記述。性格の断定表現にしないこと。
+- `choices[].hypothesis`、`traitHypotheses`、`facet`、`risk`、`scoring.note` は `spec/item_bank.csv` 由来の**仮説**メモ。
+- 設問を変えたら `version` を上げてください。バージョンが変わると、途中保存された進捗は破棄されます。
 
-- **静的サイト生成** - `next build` で `/out` に HTML を出力
-- **自動デプロイ** - main ブランチへの push で GitHub Pages に自動デプロイ
-- **自動リント** - push 時に ESLint / Prettier チェックを実行
-- **依存関係の自動更新** - Dependabot による週次チェック
-- **エディタ設定** - VS Code での自動フォーマット設定済み
+## Big Five 採点の変更 — `data/items.json` の `scoring`
 
-## ライセンス
+- `status`: `hypothesis`（採点案あり）/ `on_hold`（保留）/ `excluded`（得点に使わない）/ `validated`
+- `includeInBigFiveScore`: **現在は全問 `false`**。そのため因子得点は計算されず、結果画面には因子の説明のみが表示されます。
+- `keys`: 選択肢ごとのキー値（例 `{"A": 1, "B": 0}`）。`includeInBigFiveScore: true` かつ `keys` がある設問のみ集計され、未回答は分母から除外されます。
+- 検証（基準尺度との比較など）の根拠なしに `true` にしないこと。`true` にしても結果画面は「探索的な傾向」として件数のみを表示し、偏差値・百分率は出しません。
+- 因子名・説明は `data/big-five.json`。
 
-ISC
+## 冒険者タイプの編集 — `data/adventurer-types.json`
+
+`id`, `name`, `tagline`, `description`, `strengths`, `watchouts`, `image`, `assignmentRuleVersion`。画像は `public/` 以下に置き、`image` にパスを書きます。`wanderer` は回答不足時のフォールバックで、削除しないでください（`type-rules.json` の `fallbackTypeId`）。
+
+## タイプ判定ルールの変更 — `data/type-rules.json`
+
+Big Five とは独立した、物語演出用の仮ルールです。
+
+- `weights[設問ID][選択肢ID] = { タイプID: 重み }`
+- タイプ得点 = 選んだ重みの合計 ÷ 回答済み設問で取り得た最大重みの合計（0〜1）。タイプごとの出題数の偏りを打ち消します。
+- 1位と2位の差が `compositeThreshold` 以下なら複合タイプ（同点時は `adventurer-types.json` の並び順で決定）。
+- 回答数が `minAnsweredItems` 未満、またはルール未設定なら `fallbackTypeId`。
+- ルールを変えたら `version` を上げてください。結果には設問・ルールのバージョンが保存・表示されます。
+- 変更後は `pnpm test` を実行（未知のID参照はテストで検出されます）。
+
+## 計測
+
+`lib/analytics.ts` に `quiz_started` / `question_answered` / `quiz_completed` / `quiz_abandoned` / `result_shared` を定義済み。現在は開発時の `console.debug` のみで外部送信しません。サービスを導入する場合はこのファイルを差し替え、`app/about/page.tsx` のプライバシー記載を更新してください。

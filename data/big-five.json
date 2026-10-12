@@ -1,0 +1,37 @@
+{
+  "version": "0.1.0",
+  "validationStage": "unvalidated",
+  "note": "因子の説明のみ。設問の採点は未検証のため、includeInBigFiveScore が true の設問がない限り得点は算出されない。",
+  "factors": [
+    {
+      "id": "openness",
+      "name": "開放性",
+      "en": "Openness",
+      "description": "知的好奇心、審美的感受性、創造的想像などに関わる特性。"
+    },
+    {
+      "id": "conscientiousness",
+      "name": "誠実性",
+      "en": "Conscientiousness",
+      "description": "計画性、生産性、責任感などに関わる特性。"
+    },
+    {
+      "id": "extraversion",
+      "name": "外向性",
+      "en": "Extraversion",
+      "description": "社交性、主張性、活力などに関わる特性。"
+    },
+    {
+      "id": "agreeableness",
+      "name": "協調性",
+      "en": "Agreeableness",
+      "description": "思いやり、敬意、信頼などに関わる特性。"
+    },
+    {
+      "id": "negativeEmotionality",
+      "name": "否定的情動性",
+      "en": "Negative Emotionality",
+      "description": "不安、抑うつ傾向、情動の揺れなどに関わる特性。"
+    }
+  ]
+}
