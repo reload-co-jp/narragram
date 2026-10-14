@@ -131,6 +131,41 @@ const methods: {
     ],
   },
   {
+    heading: "学校・司法の現場で使われる性格検査から",
+    body: [
+      "日本の学校や採用で広く使われてきた YG性格検査（矢田部ギルフォード性格検査）は、質問に「はい／？／いいえ」で答える自己回答式の検査です。各項目に「はい」と答える率が、その内容の社会的な望ましさと関連することが早くから報告されています。自己回答式は「よく見られたい」という気持ちの影響を受けやすく、進路や処遇のように結果が本人に影響する場面では特に問題になります。本診断が、どちらにも合理的な理由がある行動の二択にしているのはこのためです。",
+      "同じく学校や職場で使われる内田クレペリン検査は、一桁の足し算を続けたときの作業量の推移から行動の特徴を読み取る「作業検査法」です。回答の内容ではなく行動から性格を推し量るという点で、本診断と近い発想ですが、その解釈の妥当性については古くから実証的な検討が続けられています。",
+      "少年鑑別所などの司法・矯正の現場では、1つの検査で判断せず、面接・行動観察・複数の心理検査の結果を突き合わせて総合的に評価します。2013年度からは、実際のデータを統計的に分析して項目を選んだ法務省式ケースアセスメントツール（MJCA）も用いられています。複数の情報源を組み合わせることは、専門的な心理アセスメントの基本とされています。",
+      "本診断はこうした専門的な評価とは異なり、1種類の回答だけに基づくエンターテインメントです。結果を進学・採用・処遇など、人の評価や選考には使わないでください。",
+    ],
+    refs: [
+      {
+        text: "Ohishi, A. (1964). The relationship between social desirability and probability of endorsement of items in the Yatabe-Guilford personality inventory. The Japanese Journal of Psychology, 34(6), 295–298.",
+        url: "https://doi.org/10.4992/jjpsy.34.295",
+      },
+      {
+        text: "Paulhus, D. L. (1984). Two-component models of socially desirable responding. Journal of Personality and Social Psychology, 46(3), 598–609.",
+        url: "https://doi.org/10.1037/0022-3514.46.3.598",
+      },
+      {
+        text: "Kashiwagi, S. (1964). Study on the validity of Uchida-Kräpelin test. The Japanese Journal of Psychology, 35(2), 93–95.",
+        url: "https://doi.org/10.4992/jjpsy.35.93",
+      },
+      {
+        text: "Meyer, G. J. et al. (2001). Psychological testing and psychological assessment: A review of evidence and issues. American Psychologist, 56(2), 128–165.",
+        url: "https://doi.org/10.1037/0003-066X.56.2.128",
+      },
+      {
+        text: "法務省 (2013). 法務省式ケースアセスメントツール（MJCA）の開発と運用開始について.",
+        url: "https://www.moj.go.jp/kyousei1/kyousei03_00018.html",
+      },
+      {
+        text: "法務省法務総合研究所 (2025). 令和7年版 犯罪白書 第3編第2章第3節.",
+        url: "https://hakusyo1.moj.go.jp/jp/72/nfm/n72_2_3_2_3_3.html",
+      },
+    ],
+  },
+  {
     heading: "選択肢の表示順のランダム化（順序効果）",
     body: [
       "画面で先に示された選択肢が選ばれやすくなる「初頭効果」などの順序効果が知られています。本診断では設問ごとに選択肢の上下を無作為に入れ替え、特定の選択肢が表示位置のせいで有利にならないようにしています。表示順は回答途中の再読み込みでは変わりません。",
