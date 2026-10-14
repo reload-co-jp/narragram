@@ -2,6 +2,8 @@ import Link from "next/link"
 import { getDiagnosis } from "@/lib/diagnoses"
 import type { SlugParams } from "../layout"
 
+export const metadata = { robots: { index: false } }
+
 const IntroPage = async ({ params }: SlugParams) => {
   const { meta } = getDiagnosis((await params).slug)!
   return (

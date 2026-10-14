@@ -10,7 +10,22 @@ export const generateStaticParams = () =>
 
 export const generateMetadata = async ({ params }: SlugParams) => {
   const d = getDiagnosis((await params).slug)
-  return d && { title: `${d.meta.title}｜Narragram`, description: d.meta.lead }
+  if (!d) return
+  const title = `${d.meta.title}｜Narragram`
+  const url = `/${d.meta.slug}/`
+  return {
+    title,
+    description: d.meta.lead,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description: d.meta.lead,
+      url,
+      siteName: "Narragram",
+      locale: "ja_JP",
+      type: "website",
+    },
+  }
 }
 
 const DiagnosisLayout = async ({

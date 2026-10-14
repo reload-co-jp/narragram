@@ -1,6 +1,9 @@
 import Link from "next/link"
 
-export const metadata = { title: "この診断について・プライバシー｜Narragram" }
+export const metadata = {
+  title: "この診断について・プライバシー｜Narragram",
+  alternates: { canonical: "/about/" },
+}
 
 const AboutPage = () => (
   <article className="stack">

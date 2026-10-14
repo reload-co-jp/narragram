@@ -1,5 +1,7 @@
+import type { Metadata } from "next"
 import { Noto_Sans_JP, Shippori_Mincho } from "next/font/google"
 import Link from "next/link"
+import { SITE_URL } from "@/lib/site"
 import { Footer, Header, Main } from "@/components/elements/layout"
 import "./reset.css"
 
@@ -10,10 +12,23 @@ const serif = Shippori_Mincho({
 })
 const sans = Noto_Sans_JP({ preload: false, variable: "--font-noto" })
 
-export const metadata = {
-  title: "Narragram｜物語の選択から、あなたを読み解く",
-  description:
-    "物語の中で選んだ行動から、あなたのスタイルを描き出す診断集。登録不要。エンターテインメント目的の診断です。",
+const title = "Narragram｜物語の選択から、あなたを読み解く"
+const description =
+  "物語の中で選んだ行動から、あなたのスタイルを描き出す診断集。登録不要。エンターテインメント目的の診断です。"
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title,
+  description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title,
+    description,
+    siteName: "Narragram",
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: { card: "summary" },
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
