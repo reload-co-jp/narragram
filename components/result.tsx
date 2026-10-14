@@ -126,6 +126,9 @@ const OwnResultView = ({
       <section className="panel stack">
         <h2>{meta.styleHeading}</h2>
         <p>{type.description}</p>
+        <p className="muted">
+          着想元：{type.basis}（<Link href="/methods/#types">根拠</Link>）
+        </p>
         {secondary && !result.isComposite && (
           <p className="muted">
             補助的な傾向として「{secondary.name}」に近い選択も見られました。

@@ -37,6 +37,8 @@ export type AdventurerType = {
   name: string
   tagline: string
   description: string
+  /** タイプの着想元となった性格特性（仮説）。断定表現にしない */
+  basis: string
   strengths: string[]
   watchouts: string[]
   image: string
