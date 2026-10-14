@@ -1,7 +1,7 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "provisional",
-  "note": "冒険者タイプ判定用の仮ルール。物語上の演出であり、Big Five得点とは無関係。重みは設計者の仮説で未検証。0.2.0でラプラス平滑化（smoothing）を導入。",
+  "note": "冒険者タイプ判定用の仮ルール。物語上の演出であり、Big Five得点とは無関係。重みは設計者の仮説で未検証。0.2.0でラプラス平滑化（smoothing）を導入。0.3.0で設問改訂に合わせ E3-B を guardian から observer に変更。",
   "minAnsweredItems": 10,
   "smoothing": 1,
   "compositeThreshold": 0.15,
@@ -15,7 +15,7 @@
     "C3": { "A": { "strategist": 1 }, "B": { "pioneer": 1 } },
     "E1": { "A": { "pioneer": 1 }, "B": { "observer": 1 } },
     "E2": { "A": { "pioneer": 1 }, "B": { "guardian": 1 } },
-    "E3": { "A": { "explorer": 1 }, "B": { "guardian": 1 } },
+    "E3": { "A": { "explorer": 1 }, "B": { "observer": 1 } },
     "A1": { "A": { "guardian": 1 }, "B": { "strategist": 1 } },
     "A2": { "A": { "guardian": 1 }, "B": { "strategist": 1 } },
     "A3": { "A": { "guardian": 1 }, "B": { "observer": 1 } },
