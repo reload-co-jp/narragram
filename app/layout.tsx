@@ -44,6 +44,8 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <Footer>
           <nav aria-label="サイト情報">
             <Link href="/about/">この診断について・プライバシー</Link>
+            {" / "}
+            <Link href="/methods/">診断の設計と根拠</Link>
           </nav>
           <p>
             エンターテインメント目的の診断です。医療・臨床診断ではありません。

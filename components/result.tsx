@@ -34,6 +34,8 @@ const Notes = ({ versions }: { versions?: string }) => (
     {versions && <p>{versions}</p>}
     <p>
       <Link href="/about/">この診断について</Link>
+      {" / "}
+      <Link href="/methods/">診断の設計と根拠</Link>
     </p>
   </aside>
 )
