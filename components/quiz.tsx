@@ -17,6 +17,11 @@ const initialProgress = ({ meta, bank }: Diagnosis): Progress => {
     itemBankVersion: bank.version,
     index,
     answers: sanitizeAnswers(saved?.answers, bank),
+    // 選択肢の順序効果（初頭効果）を相殺するため、設問ごとに表示順を無作為に反転する。
+    // 再読み込みで順序が入れ替わらないよう進捗と一緒に保存する。
+    reversed: Array.isArray(saved?.reversed)
+      ? saved.reversed
+      : bank.items.filter(() => Math.random() < 0.5).map((i) => i.id),
   }
 }
 
@@ -71,6 +76,9 @@ export const Quiz = ({ slug }: { slug: string }) => {
   }
 
   const selected = progress.answers[item.id]
+  const choices = progress.reversed?.includes(item.id)
+    ? [...item.choices].reverse()
+    : item.choices
   const isLast = progress.index === total - 1
 
   const select = (choiceId: string) => {
@@ -132,7 +140,7 @@ export const Quiz = ({ slug }: { slug: string }) => {
           <legend className="muted" style={{ marginBottom: "0.75rem" }}>
             {item.question}
           </legend>
-          {item.choices.map((choice) => (
+          {choices.map((choice) => (
             <label key={choice.id} className="choice">
               <input
                 type="radio"

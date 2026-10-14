@@ -15,7 +15,7 @@
         "時間や目的が限られる場面では、寄り道の量を意識するとよいかもしれません"
       ],
       "image": "/diagnoses/dungeon/types/explorer.svg",
-      "assignmentRuleVersion": "0.1.0"
+      "assignmentRuleVersion": "0.2.0"
     },
     {
       "id": "strategist",
@@ -30,7 +30,7 @@
         "情報が揃わない場面では、整理を待たずに動く選択肢もあります"
       ],
       "image": "/diagnoses/dungeon/types/strategist.svg",
-      "assignmentRuleVersion": "0.1.0"
+      "assignmentRuleVersion": "0.2.0"
     },
     {
       "id": "guardian",
@@ -45,7 +45,7 @@
         "自分の案を出すタイミングを意識すると、選択肢が広がるかもしれません"
       ],
       "image": "/diagnoses/dungeon/types/guardian.svg",
-      "assignmentRuleVersion": "0.1.0"
+      "assignmentRuleVersion": "0.2.0"
     },
     {
       "id": "pioneer",
@@ -60,7 +60,7 @@
         "初めての場所では、出発前の確認を一つ挟むと安心かもしれません"
       ],
       "image": "/diagnoses/dungeon/types/pioneer.svg",
-      "assignmentRuleVersion": "0.1.0"
+      "assignmentRuleVersion": "0.2.0"
     },
     {
       "id": "observer",
@@ -75,7 +75,7 @@
         "確認に時間をかけすぎない場面の見極めも役立つかもしれません"
       ],
       "image": "/diagnoses/dungeon/types/observer.svg",
-      "assignmentRuleVersion": "0.1.0"
+      "assignmentRuleVersion": "0.2.0"
     },
     {
       "id": "wanderer",
@@ -87,7 +87,7 @@
         "すべての場面に答えると、より具体的な冒険スタイルが表示されます"
       ],
       "image": "/diagnoses/dungeon/types/wanderer.svg",
-      "assignmentRuleVersion": "0.1.0"
+      "assignmentRuleVersion": "0.2.0"
     }
   ]
 }

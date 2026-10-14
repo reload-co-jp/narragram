@@ -1,8 +1,9 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "provisional",
-  "note": "冒険者タイプ判定用の仮ルール。物語上の演出であり、Big Five得点とは無関係。重みは設計者の仮説で未検証。",
+  "note": "冒険者タイプ判定用の仮ルール。物語上の演出であり、Big Five得点とは無関係。重みは設計者の仮説で未検証。0.2.0でラプラス平滑化（smoothing）を導入。",
   "minAnsweredItems": 10,
+  "smoothing": 1,
   "compositeThreshold": 0.15,
   "fallbackTypeId": "wanderer",
   "weights": {

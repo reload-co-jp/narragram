@@ -9,6 +9,8 @@ export type Progress = {
   itemBankVersion: string
   index: number
   answers: Answers
+  /** 選択肢の表示順を逆にした設問ID（順序効果の相殺用。採点には影響しない） */
+  reversed?: string[]
 }
 export type StoredResult = {
   answers: Answers

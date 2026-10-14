@@ -8,6 +8,7 @@ const sitemap = (): MetadataRoute.Sitemap => [
   { url: `${SITE_URL}/` },
   ...diagnoses.map((d) => ({ url: `${SITE_URL}/${d.meta.slug}/` })),
   { url: `${SITE_URL}/about/` },
+  { url: `${SITE_URL}/methods/` },
 ]
 
 export default sitemap

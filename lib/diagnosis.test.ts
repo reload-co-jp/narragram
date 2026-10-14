@@ -125,8 +125,36 @@ describe("assignType", () => {
       types
     )
     expect(r.primaryTypeId).toBe("explorer")
-    expect(r.scores.explorer).toBe(1)
+    // 5問すべて一致でも平滑化で (5+1)/(5+2)
+    expect(r.scores.explorer).toBeCloseTo(6 / 7)
     expect(r.isComposite).toBe(false)
+  })
+
+  it("smoothing prefers more evidence over a single lucky match", () => {
+    const obs = { A: { observer: 1 }, B: {} }
+    const weights = {
+      O1: { A: { explorer: 1 }, B: {} },
+      O2: obs,
+      O3: obs,
+      C1: obs,
+      C2: obs,
+      E1: obs,
+    }
+    const answers = { O1: "A", O2: "A", O3: "A", C1: "A", C2: "A", E1: "B" }
+    const base = {
+      ...rules,
+      minAnsweredItems: 1,
+      compositeThreshold: 0,
+      weights,
+    }
+    // 比率だけなら explorer 1/1 > observer 4/5
+    expect(
+      assignType(answers, bank, { ...base, smoothing: 0 }, types).primaryTypeId
+    ).toBe("explorer")
+    // 平滑化後は explorer 2/3 < observer 5/7
+    expect(assignType(answers, bank, base, types).primaryTypeId).toBe(
+      "observer"
+    )
   })
 
   it("normalizes scores to 0..1", () => {

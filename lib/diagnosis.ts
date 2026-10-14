@@ -46,6 +46,8 @@ export type AdventurerType = {
 export type TypeRules = {
   version: string
   minAnsweredItems: number
+  /** ラプラス平滑化の擬似カウント α。0 で単純な比率 */
+  smoothing: number
   compositeThreshold: number
   fallbackTypeId: string
   weights: Record<string, Record<string, Record<string, number>>>
@@ -90,8 +92,9 @@ export const sanitizeAnswers = (answers: unknown, bank: ItemBank): Answers => {
 
 /**
  * 冒険者タイプを判定する（仮ルール）。
- * 各タイプの得点 = 選んだ選択肢の重み合計 / 回答済み設問で取り得た最大重み合計。
- * 設問ごとにタイプの出現回数が違っても偏らないよう正規化している。
+ * 各タイプの得点 = (選んだ選択肢の重み合計 + α) / (回答済み設問で取り得た最大重み合計 + 2α)。
+ * 設問ごとにタイプの出現回数が違っても偏らないよう正規化し、
+ * ラプラスの継起の法則（Beta(α,α) 事前分布の事後平均）で根拠の少ないタイプを 0.5 側へ縮める。
  * 同点・僅差は複合タイプ、回答不足・ルール未設定は fallbackTypeId を返す。
  */
 export const assignType = (
@@ -123,12 +126,14 @@ export const assignType = (
   }
 
   const scores: Record<string, number> = {}
+  const a = rules.smoothing
   for (const id of candidateIds) {
-    scores[id] = possible[id] > 0 ? earned[id] / possible[id] : 0
+    scores[id] =
+      possible[id] + 2 * a > 0 ? (earned[id] + a) / (possible[id] + 2 * a) : 0
   }
   // 同点時は types の並び順で決定的に並べる（sort は安定）
   const ranked = candidateIds
-    .filter((id) => scores[id] > 0)
+    .filter((id) => earned[id] > 0)
     .sort((a, b) => scores[b] - scores[a])
 
   const base = {
