@@ -1,0 +1,20 @@
+{
+  "slug": "holiday",
+  "eyebrow": "HOLIDAY STYLE DIAGNOSIS",
+  "title": "あなたの休日、どんな過ごし方タイプ？",
+  "lead": "何気ない日常の選択から読み解く、あなたの休日スタイル。",
+  "estimate": "約3分",
+  "image": "/diagnoses/holiday/hero.svg",
+  "startLabel": "休日を始める",
+  "intro": {
+    "eyebrow": "SATURDAY MORNING",
+    "heading": "目覚ましの鳴らない、土曜日の朝。",
+    "paragraphs": [
+      "カーテンの隙間から差し込む光。今日は誰にも予定を決められていない、まるごと自由な一日です。出かけるのも、家で過ごすのも、あなた次第。",
+      "これから出会う場面で、あなたならどう動くかを選んでください。どちらの選択肢にも正解・不正解はありません。直感で選んで大丈夫です。"
+    ],
+    "cta": "一日を始める"
+  },
+  "resultLabel": "あなたの休日タイプ",
+  "styleHeading": "あなたの休日スタイル"
+}

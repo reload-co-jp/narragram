@@ -1,0 +1,469 @@
+{
+  "version": "0.1.0",
+  "source": "独自作成（日常場面）",
+  "status": "candidate",
+  "items": [
+    {
+      "id": "O1",
+      "scene": "駅のポスター",
+      "prompt": "駅の掲示板に、聞いたことのない国の文化を紹介する展示のポスターが貼られている。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "気になったので、スマホで展示の内容を調べてみる。",
+          "behavior": "見慣れないものの内容を調べる",
+          "hypothesis": "開放性＋"
+        },
+        {
+          "id": "B",
+          "text": "今日の用事には関係なさそうなので、そのまま改札へ向かう。",
+          "behavior": "目的に照らして情報を取捨選択する",
+          "hypothesis": "開放性−とは断定しない／目的志向の可能性"
+        }
+      ],
+      "traitHypotheses": [
+        "openness"
+      ],
+      "facet": "知的好奇心",
+      "risk": "Bを低開放性と単純採点しない。急いでいるかどうかで回答が変わる。",
+      "scoring": {
+        "status": "hypothesis",
+        "includeInBigFiveScore": false,
+        "keys": {
+          "A": 1,
+          "B": 0
+        },
+        "note": "A=+1、B=0（探索的）"
+      }
+    },
+    {
+      "id": "O2",
+      "scene": "新しいお店",
+      "prompt": "いつものカフェへ向かう途中、新しいお店が開店していた。どちらに入っても、予定していた時間は十分にある。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "せっかくなので、新しいお店に入ってみる。",
+          "behavior": "新しい店を試す",
+          "hypothesis": "未知への関心"
+        },
+        {
+          "id": "B",
+          "text": "いつものカフェに行き、予定していた読書の続きをする。",
+          "behavior": "慣れた場所で予定を進める",
+          "hypothesis": "目的達成志向"
+        }
+      ],
+      "traitHypotheses": [
+        "openness"
+      ],
+      "facet": "新しい経験への関心",
+      "risk": "行きつけの店への愛着が回答を左右する。時間条件を場面に明示。",
+      "scoring": {
+        "status": "on_hold",
+        "includeInBigFiveScore": false,
+        "note": "単独採点せず、パイロットで関連を確認"
+      }
+    },
+    {
+      "id": "O3",
+      "scene": "冷蔵庫の残り物",
+      "prompt": "冷蔵庫に、少しずつ残った食材がいくつかある。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "組み合わせを考えて、自分なりの一品を作ってみる。",
+          "behavior": "自分で組み合わせを考える",
+          "hypothesis": "抽象的な仮説生成"
+        },
+        {
+          "id": "B",
+          "text": "食材名でレシピを検索し、手順どおりに作る。",
+          "behavior": "既存の手順を探して従う",
+          "hypothesis": "具体的な問題探索"
+        }
+      ],
+      "traitHypotheses": [
+        "openness"
+      ],
+      "facet": "創造的想像力",
+      "risk": "料理経験の有無が回答を左右しやすい。",
+      "scoring": {
+        "status": "excluded",
+        "includeInBigFiveScore": false,
+        "note": "差を付けず、選択嗜好の記述に使用"
+      }
+    },
+    {
+      "id": "C1",
+      "scene": "小旅行の前夜",
+      "prompt": "明日は日帰りの小旅行。荷物はひととおり詰め終わっている。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "持ち物と乗り換えをもう一度確認し、メモにまとめる。",
+          "behavior": "出発前に再確認する",
+          "hypothesis": "準備・整理を重視"
+        },
+        {
+          "id": "B",
+          "text": "準備は済んだと判断し、その時間をゆっくり休むのに使う。",
+          "behavior": "準備完了と判断して休息を優先する",
+          "hypothesis": "即時行動・時間効率を重視"
+        }
+      ],
+      "traitHypotheses": [
+        "conscientiousness"
+      ],
+      "facet": "計画・整理",
+      "risk": "旅慣れの程度が回答を左右する。Bを無計画と単純採点しない。",
+      "scoring": {
+        "status": "hypothesis",
+        "includeInBigFiveScore": false,
+        "keys": {
+          "A": 1,
+          "B": 0
+        },
+        "note": "A=+1、B=0（探索的）"
+      }
+    },
+    {
+      "id": "C2",
+      "scene": "立て替えたお金",
+      "prompt": "友人たちとの食事で、何人かが代金を立て替えた。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "誰がいくら払ったかをメモしておく。",
+          "behavior": "支払いを記録する",
+          "hypothesis": "記録・管理を重視"
+        },
+        {
+          "id": "B",
+          "text": "メモはせず、その場で声をかけ合って精算する。",
+          "behavior": "その場の声かけで精算する",
+          "hypothesis": "柔軟な共同運用を重視"
+        }
+      ],
+      "traitHypotheses": [
+        "conscientiousness"
+      ],
+      "facet": "責任・遂行",
+      "risk": "精算アプリの利用習慣が回答を左右する。",
+      "scoring": {
+        "status": "on_hold",
+        "includeInBigFiveScore": false,
+        "note": "両方を有効なスタイルとして記録し、採点は保留"
+      }
+    },
+    {
+      "id": "C3",
+      "scene": "初めての商店街",
+      "prompt": "初めて訪れた商店街を散策する。午後いっぱい時間がある。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "地図アプリで気になる店を調べ、回る順番を決めてから歩く。",
+          "behavior": "順番を決めてから動く",
+          "hypothesis": "事前計画"
+        },
+        {
+          "id": "B",
+          "text": "まず近くの通りを歩き、気になった方へ進む。",
+          "behavior": "歩きながら行き先を決める",
+          "hypothesis": "適応的・反復的な計画"
+        }
+      ],
+      "traitHypotheses": [
+        "conscientiousness"
+      ],
+      "facet": "計画性",
+      "risk": "散策の楽しみ方の好みであり、計画性の高低と同一視しない。",
+      "scoring": {
+        "status": "excluded",
+        "includeInBigFiveScore": false,
+        "note": "性格得点に直結させず、結果説明の補助にする"
+      }
+    },
+    {
+      "id": "E1",
+      "scene": "友人の誕生日会",
+      "prompt": "友人の誕生日会に招かれた。会場には初対面の人も多い。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "自分から挨拶し、会話の輪に加わる。",
+          "behavior": "自分から話しかける",
+          "hypothesis": "対人接触の開始"
+        },
+        {
+          "id": "B",
+          "text": "まず周りの会話を聞き、話を振られたら加わる。",
+          "behavior": "様子を見てから会話に加わる",
+          "hypothesis": "観察してから接触"
+        }
+      ],
+      "traitHypotheses": [
+        "extraversion"
+      ],
+      "facet": "社交性",
+      "risk": "主催者との親しさが回答を左右する。",
+      "scoring": {
+        "status": "hypothesis",
+        "includeInBigFiveScore": false,
+        "keys": {
+          "A": 1,
+          "B": 0
+        },
+        "note": "A=外向性寄りの仮説、B=中立"
+      }
+    },
+    {
+      "id": "E2",
+      "scene": "決まらない行き先",
+      "prompt": "友人たちと週末の行き先を話し合っているが、なかなか決まらない。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "自分の行きたい場所と理由を先に出し、話のたたき台にする。",
+          "behavior": "自分の案を先に示す",
+          "hypothesis": "自己主張"
+        },
+        {
+          "id": "B",
+          "text": "全員の希望を一度並べてから、共通点を探す。",
+          "behavior": "全員の案を並べて調整する",
+          "hypothesis": "合意形成"
+        }
+      ],
+      "traitHypotheses": [
+        "extraversion"
+      ],
+      "facet": "自己主張",
+      "risk": "グループ内の立場が回答を左右する。",
+      "scoring": {
+        "status": "excluded",
+        "includeInBigFiveScore": false,
+        "note": "外向性の得点には単独利用しない"
+      }
+    },
+    {
+      "id": "E3",
+      "scene": "予定のない日曜",
+      "prompt": "予定のない日曜の午後。疲れはなく、天気もよい。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "友人を誘って、気になっていた場所へ出かける。",
+          "behavior": "人を誘って出かける",
+          "hypothesis": "活動・交流への選好"
+        },
+        {
+          "id": "B",
+          "text": "家で一人、本や映画をゆっくり楽しむ。",
+          "behavior": "一人の時間を楽しむ",
+          "hypothesis": "一人での状況整理への選好"
+        }
+      ],
+      "traitHypotheses": [
+        "extraversion"
+      ],
+      "facet": "活動性",
+      "risk": "体調と天気の条件を場面に明示。Bを低活動と単純採点しない。",
+      "scoring": {
+        "status": "on_hold",
+        "includeInBigFiveScore": false,
+        "note": "疲労条件を明示し、採点はパイロット後"
+      }
+    },
+    {
+      "id": "A1",
+      "scene": "落としたスマホ",
+      "prompt": "一緒に歩いていた友人がスマホを落とし、画面にひびが入った。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "まず友人にけががないか、困っていることはないかを聞く。",
+          "behavior": "相手の状態を気づかう",
+          "hypothesis": "個人への即時支援"
+        },
+        {
+          "id": "B",
+          "text": "落ちた原因を一緒に確かめ、次に落とさない工夫を考える。",
+          "behavior": "再発防止を考える",
+          "hypothesis": "集団の安全・再発防止"
+        }
+      ],
+      "traitHypotheses": [
+        "agreeableness"
+      ],
+      "facet": "思いやり",
+      "risk": "どちらも相手への配慮になりうる。",
+      "scoring": {
+        "status": "on_hold",
+        "includeInBigFiveScore": false,
+        "note": "採点保留。回答の理由を聞く認知インタビュー向け"
+      }
+    },
+    {
+      "id": "A2",
+      "scene": "違うアイデア",
+      "prompt": "友人の送別会の準備で、もう一人の幹事が自分とは違う企画を提案してきた。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "まず相手の考えと理由を聞き、意図を理解する。",
+          "behavior": "相手の意図を先に聞く",
+          "hypothesis": "相手理解を優先"
+        },
+        {
+          "id": "B",
+          "text": "自分の案との良い点・気になる点を並べて比べる。",
+          "behavior": "案を並べて比較する",
+          "hypothesis": "課題比較を優先"
+        }
+      ],
+      "traitHypotheses": [
+        "agreeableness"
+      ],
+      "facet": "相手への敬意",
+      "risk": "相手との関係性が回答を左右する。",
+      "scoring": {
+        "status": "on_hold",
+        "includeInBigFiveScore": false,
+        "note": "採点保留"
+      }
+    },
+    {
+      "id": "A3",
+      "scene": "道案内の申し出",
+      "prompt": "旅先で道に迷っていると、地元の人が「案内しましょうか」と声をかけてくれた。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "お礼を言って、案内をお願いする。",
+          "behavior": "申し出を受ける",
+          "hypothesis": "他者の申し出を信頼する"
+        },
+        {
+          "id": "B",
+          "text": "お礼を言って断り、地図アプリで確かめながら進む。",
+          "behavior": "申し出を断り自力で進む",
+          "hypothesis": "自分で確かめることを重視"
+        }
+      ],
+      "traitHypotheses": [
+        "agreeableness"
+      ],
+      "facet": "信頼・協力",
+      "risk": "治安や土地勘の想定が回答を左右する。",
+      "scoring": {
+        "status": "on_hold",
+        "includeInBigFiveScore": false,
+        "note": "0.2.0で選択肢を改訂。採点はパイロット後"
+      }
+    },
+    {
+      "id": "N1",
+      "scene": "玄関前の荷物",
+      "prompt": "夜に帰宅すると、玄関前に頼んだ覚えのない荷物が置かれている。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "いったん触らず、家族や配送業者に確認してから扱う。",
+          "behavior": "距離を取って確認する",
+          "hypothesis": "不確実性への慎重な対応"
+        },
+        {
+          "id": "B",
+          "text": "荷物に近づき、宛名や送り主を確かめる。",
+          "behavior": "近づいて正体を確かめる",
+          "hypothesis": "接近して情報を得る"
+        }
+      ],
+      "traitHypotheses": [
+        "negativeEmotionality"
+      ],
+      "facet": "不安への反応",
+      "risk": "防犯意識や住環境が回答を左右する。",
+      "scoring": {
+        "status": "excluded",
+        "includeInBigFiveScore": false,
+        "note": "否定的情動性の得点に使わない"
+      }
+    },
+    {
+      "id": "N2",
+      "scene": "中止になったライブ",
+      "prompt": "楽しみにしていたライブが、当日になって中止になった。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "いったん気持ちを落ち着けてから、今日の過ごし方を考える。",
+          "behavior": "気持ちを整理してから次を考える",
+          "hypothesis": "振り返りを先にする"
+        },
+        {
+          "id": "B",
+          "text": "すぐに代わりの予定をいくつか挙げ、できることから始める。",
+          "behavior": "すぐ代替案に切り替える",
+          "hypothesis": "問題解決を先にする"
+        }
+      ],
+      "traitHypotheses": [
+        "negativeEmotionality"
+      ],
+      "facet": "感情の回復",
+      "risk": "落胆の大きさは個人差が大きく、どちらも回復の仕方の違い。",
+      "scoring": {
+        "status": "excluded",
+        "includeInBigFiveScore": false,
+        "note": "否定的情動性の得点に使わない"
+      }
+    },
+    {
+      "id": "N3",
+      "scene": "閉店間際の買い物",
+      "prompt": "閉店まであと5分。二つの商品のどちらを買うかで迷っている。",
+      "question": "あなたならどうする？",
+      "choices": [
+        {
+          "id": "A",
+          "text": "一度手を止め、何を優先したいかを確認してから決める。",
+          "behavior": "優先順位を確認して決める",
+          "hypothesis": "確認してから決断"
+        },
+        {
+          "id": "B",
+          "text": "今の情報で決め、合わなければ後で考える。",
+          "behavior": "今ある情報で決める",
+          "hypothesis": "不確実性下での決断"
+        }
+      ],
+      "traitHypotheses": [
+        "negativeEmotionality"
+      ],
+      "facet": "ストレス時の反応",
+      "risk": "金額や返品可否の想定が回答を左右する。",
+      "scoring": {
+        "status": "excluded",
+        "includeInBigFiveScore": false,
+        "note": "否定的情動性の得点に使わない"
+      }
+    }
+  ]
+}

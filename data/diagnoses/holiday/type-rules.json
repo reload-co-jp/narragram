@@ -1,0 +1,131 @@
+{
+  "version": "0.1.0",
+  "status": "provisional",
+  "note": "休日タイプ判定用の仮ルール。物語上の演出であり、Big Five得点とは無関係。重みは設計者の仮説で未検証。ラプラス平滑化（smoothing）を使用。",
+  "minAnsweredItems": 10,
+  "smoothing": 1,
+  "compositeThreshold": 0.15,
+  "fallbackTypeId": "blank",
+  "weights": {
+    "O1": {
+      "A": {
+        "stroller": 1
+      },
+      "B": {
+        "doer": 1
+      }
+    },
+    "O2": {
+      "A": {
+        "stroller": 1
+      },
+      "B": {
+        "planner": 1
+      }
+    },
+    "O3": {
+      "A": {
+        "stroller": 1
+      },
+      "B": {
+        "watcher": 1
+      }
+    },
+    "C1": {
+      "A": {
+        "planner": 1
+      },
+      "B": {
+        "doer": 1
+      }
+    },
+    "C2": {
+      "A": {
+        "planner": 1
+      },
+      "B": {
+        "caretaker": 1
+      }
+    },
+    "C3": {
+      "A": {
+        "planner": 1
+      },
+      "B": {
+        "doer": 1
+      }
+    },
+    "E1": {
+      "A": {
+        "doer": 1
+      },
+      "B": {
+        "watcher": 1
+      }
+    },
+    "E2": {
+      "A": {
+        "doer": 1
+      },
+      "B": {
+        "caretaker": 1
+      }
+    },
+    "E3": {
+      "A": {
+        "stroller": 1
+      },
+      "B": {
+        "watcher": 1
+      }
+    },
+    "A1": {
+      "A": {
+        "caretaker": 1
+      },
+      "B": {
+        "planner": 1
+      }
+    },
+    "A2": {
+      "A": {
+        "caretaker": 1
+      },
+      "B": {
+        "planner": 1
+      }
+    },
+    "A3": {
+      "A": {
+        "caretaker": 1
+      },
+      "B": {
+        "watcher": 1
+      }
+    },
+    "N1": {
+      "A": {
+        "watcher": 1
+      },
+      "B": {
+        "stroller": 1
+      }
+    },
+    "N2": {
+      "A": {
+        "watcher": 1
+      },
+      "B": {
+        "doer": 1
+      }
+    },
+    "N3": {
+      "A": {
+        "watcher": 1
+      },
+      "B": {
+        "doer": 1
+      }
+    }
+  }
+}
