@@ -80,6 +80,8 @@ export const Quiz = ({ slug }: { slug: string }) => {
     ? [...item.choices].reverse()
     : item.choices
   const isLast = progress.index === total - 1
+  const answered = Object.keys(progress.answers).length
+  const percent = Math.round((answered / total) * 100)
 
   const select = (choiceId: string) => {
     setProgress((p) => ({
@@ -119,14 +121,19 @@ export const Quiz = ({ slug }: { slug: string }) => {
         else go(1)
       }}
     >
-      <div className="progress-row">
-        <span aria-hidden="true">
-          {pad(progress.index + 1)} / {pad(total)}
-        </span>
+      <div className="progress">
+        <div className="progress-row" aria-hidden="true">
+          <span>
+            {pad(progress.index + 1)} / {pad(total)}
+          </span>
+          <span className="muted">
+            {percent}% · 残り{total - answered}問
+          </span>
+        </div>
         <progress
-          value={progress.index + 1}
+          value={answered}
           max={total}
-          aria-label={`${total}問中${progress.index + 1}問目`}
+          aria-label={`${total}問中${progress.index + 1}問目、回答済み${answered}問`}
         />
       </div>
 

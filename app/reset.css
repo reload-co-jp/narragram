@@ -257,17 +257,48 @@ h3 {
 }
 
 /* ---- 診断 ---- */
-.progress-row {
-  align-items: center;
-  display: flex;
-  gap: 0.75rem;
-  font-variant-numeric: tabular-nums;
+.progress {
+  display: grid;
+  gap: 0.5rem;
 }
 
-.progress-row progress {
-  accent-color: var(--teal);
-  flex: 1;
+.progress-row {
+  display: flex;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  justify-content: space-between;
+}
+
+/* Safari は accent-color を無視するため、トラックと塗りを自前で描く */
+.progress progress {
+  appearance: none;
+  background: var(--panel-border);
+  border: 0;
+  border-radius: 999px;
   height: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progress progress::-webkit-progress-bar {
+  background: var(--panel-border);
+}
+
+.progress progress::-webkit-progress-value {
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.progress progress::-moz-progress-bar {
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress progress::-webkit-progress-value {
+    transition: none;
+  }
 }
 
 .choices {
