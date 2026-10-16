@@ -6,7 +6,6 @@ import { TypeGrid } from "@/components/type-grid"
 const Page: FC = () => (
   <div className="stack fade-in">
     <header className="site-intro">
-      <p className="eyebrow">NARRAGRAM</p>
       <h1>物語の選択から、あなたを読み解く。</h1>
       <p className="muted">
         物語の中で選んだ行動から、あなたのスタイルを描き出す診断集。登録不要・正解なし。
