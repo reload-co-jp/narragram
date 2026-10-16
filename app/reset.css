@@ -212,48 +212,110 @@ h3 {
   font-size: clamp(1.4rem, 5vw, 2rem);
 }
 
-/* 一覧ページのみ幅を広げ、診断が増えたら複数列に並べる */
-.site-main:has(.catalog) {
+/* 一覧ページのみ幅を広げる */
+.site-main:has(.catalog-group) {
   max-width: 66rem;
 }
 
-.catalog {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
-  list-style: none;
-  padding: 0;
+/* 診断ごとに色付きセクション。--accent は nth-of-type で順に割り当て */
+.catalog-group {
+  --accent: var(--teal);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 16%, var(--panel)),
+    var(--panel) 70%
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--panel-border));
+  border-radius: 1.25rem;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
 }
 
-.catalog-card {
+.catalog-group:nth-of-type(even) {
+  --accent: var(--gold);
+}
+
+.catalog-group .eyebrow,
+.catalog-group .catalog-meta {
+  color: var(--accent);
+}
+
+.catalog-group-head {
   align-items: center;
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
-  border-radius: 0.75rem;
-  color: var(--text);
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  text-decoration: none;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
 }
 
-.catalog-card:hover {
-  border-color: var(--gold-dim);
+.catalog-group-head > div {
+  flex: 1 1 18rem;
 }
 
-.catalog-card img {
+.catalog-group-head img {
   flex: none;
   height: auto;
   width: 5rem;
 }
 
-.catalog-card h2 {
-  font-size: 1.1rem;
+.catalog-group-head h2 {
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem);
 }
 
 .catalog-meta {
-  color: var(--gold);
   font-size: 0.8rem;
+}
+
+.type-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
+  list-style: none;
+  margin-top: 1.75rem;
+  padding: 0;
+}
+
+.type-section {
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.type-section h2 {
+  font-size: 1.3rem;
+}
+
+.type-section .type-grid {
+  margin-top: 1rem;
+}
+
+.type-card {
+  background: var(--bg-2);
+  border: 1px solid var(--panel-border);
+  border-radius: 1rem;
+  padding: 1.25rem 0.75rem 1rem;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.type-card:hover {
+  border-color: var(--accent, var(--teal));
+  transform: translateY(-4px);
+}
+
+.type-card img {
+  height: auto;
+  max-width: 7.5rem;
+  width: 80%;
+}
+
+.type-card h3 {
+  color: var(--accent, var(--teal));
+  font-size: 1.05rem;
+  margin-top: 0.5rem;
+}
+
+.type-card p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  margin-top: 0.25rem;
 }
 
 /* ---- 診断 ---- */
