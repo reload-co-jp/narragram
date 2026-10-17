@@ -46,6 +46,8 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             <Link href="/about/">この診断について・プライバシー</Link>
             {" / "}
             <Link href="/methods/">診断の設計と根拠</Link>
+            {" / "}
+            <Link href="/guide/">性格心理学の解説</Link>
           </nav>
           <p>
             エンターテインメント目的の診断です。医療・臨床診断ではありません。
