@@ -2,7 +2,7 @@ import { CSSProperties, FC } from "react"
 import Link from "next/link"
 import { diagnoses } from "@/lib/diagnoses"
 import { guides } from "@/lib/guides"
-import { DiagnosisCard } from "@/components/diagnosis-card"
+import { TrackedLink } from "@/components/tracked-link"
 import { TypeGrid } from "@/components/type-grid"
 
 const css = `
@@ -36,18 +36,84 @@ const css = `
   justify-self: center;
   min-width: min(100%, 18rem);
 }
-.home-cards {
+.home-spotlights {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 2.5rem;
 }
-.home-preview {
+.spotlight {
+  background:
+    radial-gradient(
+      ellipse 80% 70% at 0% 0%,
+      color-mix(in srgb, var(--accent) 20%, transparent),
+      transparent 70%
+    ),
+    var(--panel);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--panel-border));
+  border-radius: 1.5rem;
   display: grid;
   gap: 2rem;
+  padding: clamp(1.25rem, 5vw, 3rem);
 }
-.home-preview h3 {
+.spotlight-intro {
+  align-items: center;
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+  text-align: center;
+}
+.spotlight-intro > img {
+  filter: drop-shadow(0 0.75rem 2rem color-mix(in srgb, var(--accent) 35%, transparent));
+  height: auto;
+  width: min(60%, 15rem);
+}
+.spotlight-body {
+  display: grid;
+  gap: 1rem;
+}
+.spotlight-num {
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.6;
+}
+.home .spotlight h2 {
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  margin-bottom: 0;
+}
+.spotlight .badges li {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  color: var(--accent);
+}
+.spotlight-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  justify-content: center;
+}
+.spotlight-actions .btn {
+  min-width: min(100%, 16rem);
+}
+.spotlight h3 {
   font-size: 1rem;
   margin-bottom: 0.75rem;
+}
+@media (min-width: 48rem) {
+  .spotlight-intro {
+    grid-template-columns: 2fr 3fr;
+    justify-items: start;
+    text-align: start;
+  }
+  .spotlight-intro > img {
+    justify-self: center;
+    width: min(100%, 16rem);
+  }
+  .spotlight .badges,
+  .spotlight-actions {
+    justify-content: start;
+  }
 }
 .home-steps {
   counter-reset: step;
@@ -115,30 +181,55 @@ const Page: FC = () => (
       </a>
     </section>
 
-    <section id="diagnoses" aria-labelledby="diagnoses-heading">
-      <h2 id="diagnoses-heading">診断を選ぶ</h2>
-      <div className="home-cards">
-        {diagnoses.map((d) => (
-          <DiagnosisCard key={d.meta.slug} d={d} from="home" />
-        ))}
-      </div>
-    </section>
-
-    <section aria-labelledby="preview-heading">
-      <h2 id="preview-heading">こんなタイプが待っています</h2>
-      <div className="home-preview">
-        {diagnoses.map(({ meta, types }) => (
-          <div
-            key={meta.slug}
-            style={{ "--accent": meta.accent } as CSSProperties}
-          >
-            <h3>
-              {meta.shortTitle}（全{types.length}タイプから）
-            </h3>
+    <section id="diagnoses" className="home-spotlights" aria-label="診断一覧">
+      {diagnoses.map(({ meta, bank, types }, i) => (
+        <article
+          key={meta.slug}
+          className="spotlight"
+          style={{ "--accent": meta.accent } as CSSProperties}
+          aria-labelledby={`spotlight-${meta.slug}`}
+        >
+          <div className="spotlight-intro">
+            <img
+              src={meta.image}
+              alt=""
+              width={240}
+              height={240}
+              loading={i === 0 ? "eager" : "lazy"}
+            />
+            <div className="spotlight-body">
+              <p className="spotlight-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </p>
+              <p className="eyebrow">{meta.shortTitle}</p>
+              <h2 id={`spotlight-${meta.slug}`}>{meta.title}</h2>
+              <p className="muted">{meta.theme}</p>
+              <ul className="badges" aria-label="診断の概要">
+                <li>全{bank.items.length}問</li>
+                <li>{meta.estimate}</li>
+                <li>{types.length}タイプ</li>
+              </ul>
+              <div className="spotlight-actions">
+                <TrackedLink
+                  href={`/${meta.slug}/intro/`}
+                  className="btn"
+                  event={[
+                    "diagnosis_card_clicked",
+                    { diagnosis: meta.slug, from: "home" },
+                  ]}
+                >
+                  {meta.startLabel}
+                </TrackedLink>
+                <Link href={`/${meta.slug}/`}>タイプ一覧と詳細</Link>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3>こんなタイプが待っています（全{types.length}タイプから）</h3>
             <TypeGrid slug={meta.slug} types={types.slice(0, 3)} />
           </div>
-        ))}
-      </div>
+        </article>
+      ))}
     </section>
 
     <section aria-labelledby="how-heading">
