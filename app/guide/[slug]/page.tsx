@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { DiagnosisCard } from "@/components/diagnosis-card"
 import { notFound } from "next/navigation"
 import { diagnoses } from "@/lib/diagnoses"
 import { getGuide, guides } from "@/lib/guides"
@@ -26,6 +27,7 @@ export const generateMetadata = async ({ params }: Params) => {
       locale: "ja_JP",
       type: "article",
       publishedTime: g.published,
+      images: "/og.png",
     },
   }
 }
@@ -81,13 +83,9 @@ const GuidePage = async ({ params }: Params) => {
 
       <section className="stack">
         <h2>診断を試してみる</h2>
-        <ul>
-          {diagnoses.map((d) => (
-            <li key={d.meta.slug}>
-              <Link href={`/${d.meta.slug}/`}>{d.meta.title}</Link>
-            </li>
-          ))}
-        </ul>
+        {diagnoses.map((d) => (
+          <DiagnosisCard key={d.meta.slug} d={d} from={`guide:${g.slug}`} />
+        ))}
         <h2>ほかの解説</h2>
         <ul>
           {guides

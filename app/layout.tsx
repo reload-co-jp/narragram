@@ -27,8 +27,9 @@ export const metadata: Metadata = {
     siteName: "Narragram",
     locale: "ja_JP",
     type: "website",
+    images: "/og.png",
   },
-  twitter: { card: "summary" },
+  twitter: { card: "summary_large_image" },
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
@@ -39,6 +40,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <Link href="/" className="site-logo">
             NARRAGRAM
           </Link>
+          <nav aria-label="メイン" className="site-nav">
+            <Link href="/#diagnoses">診断一覧</Link>
+            <Link href="/guide/">解説</Link>
+          </nav>
         </Header>
         <Main>{children}</Main>
         <Footer>

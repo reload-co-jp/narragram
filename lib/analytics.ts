@@ -3,11 +3,15 @@
 // 回答本文・個人を特定できる情報は payload に含めない。
 
 type Events = {
+  diagnosis_card_clicked: { from: string }
   quiz_started: Record<never, never>
   question_answered: { itemId: string; choiceId: string }
   quiz_completed: { typeId: string; ruleVersion: string }
   quiz_abandoned: { itemId: string }
-  result_shared: { typeId: string; method: "share" | "copy" }
+  result_viewed: { typeId: string; shared: boolean }
+  result_shared: { typeId: string; method: "x" | "share" | "copy" }
+  result_card_saved: { typeId: string }
+  other_diagnosis_clicked: { from: string; to: string }
 }
 
 export const track = <K extends keyof Events>(

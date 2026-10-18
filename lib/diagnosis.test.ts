@@ -3,11 +3,14 @@ import {
   Answers,
   assignType,
   chosenBehaviors,
+  choicesForType,
+  contrastTypes,
   FactorId,
   ItemBank,
   sanitizeAnswers,
   scoreBigFive,
   TypeRules,
+  typeTally,
 } from "./diagnosis"
 import { diagnoses, getDiagnosis } from "./diagnoses"
 
@@ -201,5 +204,31 @@ describe("chosenBehaviors", () => {
         behavior: "目的に照らして情報を取捨選択する",
       },
     ])
+  })
+})
+
+describe("type page helpers", () => {
+  it("choicesForType lists choices weighted toward the type", () => {
+    const c = choicesForType("explorer", bank, rules)
+    expect(c.map((x) => x.itemId)).toContain("O1")
+    for (const x of c)
+      expect(Object.keys(rules.weights[x.itemId]).length).toBeGreaterThan(0)
+    expect(choicesForType(rules.fallbackTypeId, bank, rules)).toEqual([])
+  })
+
+  it("contrastTypes finds types on the other choice of the same scene", () => {
+    const c = contrastTypes("explorer", rules)
+    expect(c.map((x) => x.typeId)).toContain("pioneer")
+    expect(c.map((x) => x.typeId)).not.toContain("explorer")
+  })
+
+  it("typeTally agrees with the earned weights used by assignType", () => {
+    const answers = all("A")
+    const tally = typeTally(answers, bank, rules)
+    const total = Object.values(tally).reduce((a, b) => a + b, 0)
+    expect(total).toBeGreaterThanOrEqual(bank.items.length)
+    const r = assignType(answers, bank, rules, types)
+    const top = Math.max(...Object.values(tally))
+    expect(tally[r.primaryTypeId]).toBe(top)
   })
 })

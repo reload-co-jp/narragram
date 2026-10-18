@@ -209,3 +209,53 @@ export const chosenBehaviors = (rawAnswers: Answers, bank: ItemBank) => {
       behavior: item.choices.find((c) => c.id === answers[item.id])!.behavior,
     }))
 }
+
+/** 判定ルール上、そのタイプに重みを与える選択肢（タイプ別ページで「物語内での選択」として示す） */
+export const choicesForType = (
+  typeId: string,
+  bank: ItemBank,
+  rules: TypeRules
+) =>
+  bank.items.flatMap((item) =>
+    item.choices
+      .filter((c) => (rules.weights[item.id]?.[c.id]?.[typeId] ?? 0) > 0)
+      .map((c) => ({
+        itemId: item.id,
+        scene: item.scene,
+        behavior: c.behavior,
+      }))
+  )
+
+/** 同じ場面で別の選択肢に重みを持つタイプを、重なった場面数の多い順に返す */
+export const contrastTypes = (typeId: string, rules: TypeRules) => {
+  const counts: Record<string, number> = {}
+  for (const itemWeights of Object.values(rules.weights)) {
+    const choices = Object.values(itemWeights)
+    if (!choices.some((w) => (w[typeId] ?? 0) > 0)) continue
+    const others = new Set(
+      choices
+        .filter((w) => !((w[typeId] ?? 0) > 0))
+        .flatMap((w) => Object.keys(w).filter((id) => w[id] > 0))
+    )
+    for (const id of others) counts[id] = (counts[id] ?? 0) + 1
+  }
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, count]) => ({ typeId: id, count }))
+}
+
+/** 回答のうち、各タイプに重みを与えた選択の場面数（結果ページの内訳表示用。判定には使わない） */
+export const typeTally = (
+  rawAnswers: Answers,
+  bank: ItemBank,
+  rules: TypeRules
+) => {
+  const answers = sanitizeAnswers(rawAnswers, bank)
+  const tally: Record<string, number> = {}
+  for (const [itemId, choiceId] of Object.entries(answers)) {
+    const w = rules.weights[itemId]?.[choiceId] ?? {}
+    for (const id of Object.keys(w))
+      if (w[id] > 0) tally[id] = (tally[id] ?? 0) + 1
+  }
+  return tally
+}

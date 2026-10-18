@@ -40,3 +40,10 @@ export const diagnoses: Diagnosis[] = [
 
 export const getDiagnosis = (slug: string) =>
   diagnoses.find((d) => d.meta.slug === slug)
+
+export const getType = (slug: string, typeId: string) =>
+  getDiagnosis(slug)?.types.find((t) => t.id === typeId)
+
+/** タイプ別ページのURL。結果の共有先にも使う（回答は含めない） */
+export const typePath = (slug: string, typeId: string) =>
+  `/${slug}/types/${typeId}/`

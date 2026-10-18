@@ -1,8 +1,11 @@
 {
   "slug": "dungeon",
+  "shortTitle": "異世界冒険スタイル診断",
   "eyebrow": "ISEKAI DUNGEON DIAGNOSIS",
   "title": "あなたが転生したら、どんな冒険者になる？",
   "lead": "選択から読み解く、あなたの異世界冒険スタイル。",
+  "theme": "ダンジョン探索や仲間との出来事を舞台に、未知や危険にどう向き合うかを選びます。",
+  "accent": "#5fd4c4",
   "estimate": "約3分",
   "image": "/diagnoses/dungeon/hero.svg",
   "startLabel": "冒険を始める",

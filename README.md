@@ -84,4 +84,4 @@ Big Five とは独立した、物語演出用の仮ルールです。
 
 ## 計測
 
-`lib/analytics.ts` に `quiz_started` / `question_answered` / `quiz_completed` / `quiz_abandoned` / `result_shared` を定義済み。現在は開発時の `console.debug` のみで外部送信しません。サービスを導入する場合はこのファイルを差し替え、`app/about/page.tsx` のプライバシー記載を更新してください。
+`lib/analytics.ts` に `diagnosis_card_clicked` / `quiz_started` / `question_answered` / `quiz_completed` / `quiz_abandoned` / `result_viewed` / `result_shared` / `result_card_saved` / `other_diagnosis_clicked` を定義済み。現在は開発時の `console.debug` のみで外部送信しません。サービスを導入する場合はこのファイルを差し替え、`app/about/page.tsx` のプライバシー記載を更新してください。

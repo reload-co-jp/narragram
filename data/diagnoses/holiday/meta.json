@@ -1,8 +1,11 @@
 {
   "slug": "holiday",
+  "shortTitle": "休日スタイル診断",
   "eyebrow": "HOLIDAY STYLE DIAGNOSIS",
   "title": "あなたの休日、どんな過ごし方タイプ？",
   "lead": "何気ない日常の選択から読み解く、あなたの休日スタイル。",
+  "theme": "予定のない土曜日を舞台に、何気ない日常の過ごし方を選びます。",
+  "accent": "#e8956b",
   "estimate": "約3分",
   "image": "/diagnoses/holiday/hero.svg",
   "startLabel": "休日を始める",

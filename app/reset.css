@@ -4,16 +4,17 @@
 }
 
 :root {
-  --bg: #0a0d1a;
-  --bg-2: #141029;
-  --panel: #161a2e;
-  --panel-border: #2f3352;
-  --text: #ece7da;
-  --muted: #b3aec2;
-  --teal: #5fd4c4;
-  --gold: #d2b26a;
+  /* ネイビー・生成り・アンティークゴールドが基本色。--accent は診断ごとに上書きする */
+  --bg: #0d1526;
+  --bg-2: #131d33;
+  --panel: #17223b;
+  --panel-border: #2b3a5c;
+  --text: #f1ead9;
+  --muted: #b8b2a3;
+  --gold: #c8a764;
   --gold-dim: #8a7444;
-  --focus: #8ff0e2;
+  --accent: var(--gold);
+  --focus: #f3d98f;
   --font-serif:
     var(--font-shippori), "Hiragino Mincho ProN", "Yu Mincho", serif;
   --font-sans:
@@ -26,14 +27,20 @@
 
 body {
   background:
-    radial-gradient(ellipse at 50% -10%, #2a1d4d 0%, transparent 60%), var(--bg);
+    radial-gradient(ellipse at 50% -10%, #1c2a4d 0%, transparent 60%), var(--bg);
   font-family: var(--font-sans);
   line-height: 1.8;
   min-height: 100dvh;
 }
 
 a {
-  color: var(--teal);
+  color: var(--text);
+  text-decoration-color: var(--gold);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--gold);
 }
 
 :focus-visible {
@@ -55,6 +62,14 @@ h3 {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 1rem;
+}
+
+.site-nav {
+  font-size: 0.85rem;
+}
+
+.site-nav a {
+  text-decoration: none;
 }
 
 .site-logo {
@@ -80,9 +95,11 @@ h3 {
   text-align: center;
 }
 
-.site-footer nav {
+.site-footer nav,
+.site-nav {
   display: flex;
-  gap: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
   justify-content: center;
   margin-bottom: 0.5rem;
 }
@@ -145,7 +162,7 @@ h3 {
 }
 
 .eyebrow {
-  color: var(--teal);
+  color: var(--accent);
   font-size: 0.8rem;
   letter-spacing: 0.2em;
 }
@@ -182,304 +199,6 @@ h3 {
   padding: 0.5rem 0.75rem;
 }
 
-/* ---- トップ ---- */
-.hero {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  min-height: calc(100dvh - 9rem);
-  justify-content: center;
-  text-align: center;
-}
-
-.hero-art {
-  max-width: 18rem;
-  width: 70%;
-}
-
-.hero h1 {
-  font-size: clamp(1.6rem, 6vw, 2.3rem);
-}
-
-/* ---- 診断一覧 ---- */
-/* トップではサイト紹介をサイトヘッダーの2行目として表示 */
-body:has(.site-intro) .site-header {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-.site-intro {
-  align-items: baseline;
-  border-bottom: 1px solid var(--panel-border);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 1rem;
-  padding: 0.25rem 1rem 0.75rem;
-}
-
-.site-intro h1 {
-  font-family: var(--font-serif);
-  font-size: 0.95rem;
-}
-
-.site-intro p {
-  font-size: 0.8rem;
-}
-
-/* 一覧ページはカードを全幅に。中身は66rem内に収める */
-.site-main:has(.catalog-group) {
-  max-width: none;
-  padding: 0;
-}
-
-/* 診断ごとに色付きセクション。--accent は nth-of-type で順に割り当て */
-.catalog-group {
-  --accent: var(--teal);
-  background:
-    radial-gradient(
-      ellipse 60% 50% at 85% 20%,
-      color-mix(in srgb, var(--accent) 22%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 50% 40% at 10% 90%,
-      color-mix(in srgb, var(--accent) 10%, transparent),
-      transparent 70%
-    ),
-    var(--bg);
-  border-top: 1px solid
-    color-mix(in srgb, var(--accent) 30%, transparent);
-  padding: clamp(3rem, 8vh, 5rem) clamp(1.25rem, 4vw, 2.25rem);
-  padding-inline: max(clamp(1rem, 4vw, 2.25rem), calc((100% - 66rem) / 2));
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100dvh;
-  scroll-snap-align: start;
-}
-
-html:has(.catalog-group) {
-  scroll-snap-type: y proximity;
-}
-
-/* .stack の隙間を消してセクションを連続させる */
-.stack > .catalog-group {
-  margin-top: 0;
-}
-
-.catalog-group:nth-of-type(even) {
-  --accent: var(--gold);
-}
-
-/* スクロールで中身がふわっと出る。非対応ブラウザでは常に表示 */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .catalog-group > * {
-      animation: rise linear both;
-      animation-range: entry 10% cover 35%;
-      animation-timeline: view();
-    }
-  }
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(2rem);
-  }
-}
-
-.catalog-group .eyebrow,
-.catalog-group .catalog-meta {
-  color: var(--accent);
-}
-
-/* hero風: 画像・タイトル・CTAを中央に縦積み */
-.catalog-group-head {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-inline: auto;
-  max-width: 40rem;
-  text-align: center;
-}
-
-.catalog-group-head img {
-  filter: drop-shadow(
-    0 0 3rem color-mix(in srgb, var(--accent) 50%, transparent)
-  );
-  height: auto;
-  width: clamp(9rem, 30vw, 16rem);
-}
-
-.catalog-group-head h2 {
-  font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 7vw, 4rem);
-  letter-spacing: 0.06em;
-  line-height: 1.25;
-  margin-block: 0.25rem 0.75rem;
-}
-
-.catalog-group-head .btn {
-  font-size: 1.1rem;
-  padding: 0.9rem 2.75rem;
-}
-
-.catalog-meta {
-  font-size: 0.8rem;
-}
-
-.type-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
-  list-style: none;
-  margin-top: 1.75rem;
-  padding: 0;
-}
-
-.type-section {
-  padding-top: 2rem;
-  text-align: center;
-}
-
-.type-section h2 {
-  font-size: 1.3rem;
-}
-
-.type-section .type-grid {
-  margin-top: 1rem;
-}
-
-.type-card {
-  background: var(--bg-2);
-  border: 1px solid var(--panel-border);
-  border-radius: 1rem;
-  padding: 1.25rem 0.75rem 1rem;
-  text-align: center;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.type-card:hover {
-  border-color: var(--accent, var(--teal));
-  transform: translateY(-4px);
-}
-
-.catalog-group .type-card {
-  backdrop-filter: blur(8px);
-  background: color-mix(in srgb, var(--panel) 55%, transparent);
-  border-color: color-mix(in srgb, var(--accent) 18%, transparent);
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.catalog-group .type-card:hover {
-  box-shadow: 0 0.75rem 2rem -0.75rem
-    color-mix(in srgb, var(--accent) 50%, transparent);
-}
-
-.type-card img {
-  height: auto;
-  max-width: 7.5rem;
-  width: 80%;
-}
-
-.type-card h3 {
-  color: var(--accent, var(--teal));
-  font-size: 1.05rem;
-  margin-top: 0.5rem;
-}
-
-.type-card p {
-  font-size: 0.8rem;
-  line-height: 1.6;
-  margin-top: 0.25rem;
-}
-
-/* ---- 診断 ---- */
-.progress {
-  display: grid;
-  gap: 0.5rem;
-}
-
-.progress-row {
-  display: flex;
-  font-size: 0.85rem;
-  font-variant-numeric: tabular-nums;
-  justify-content: space-between;
-}
-
-/* Safari は accent-color を無視するため、トラックと塗りを自前で描く */
-.progress progress {
-  appearance: none;
-  background: var(--panel-border);
-  border: 0;
-  border-radius: 999px;
-  height: 0.5rem;
-  overflow: hidden;
-  width: 100%;
-}
-
-.progress progress::-webkit-progress-bar {
-  background: var(--panel-border);
-}
-
-.progress progress::-webkit-progress-value {
-  background: linear-gradient(90deg, var(--teal), var(--gold));
-  border-radius: 999px;
-  transition: width 0.3s ease;
-}
-
-.progress progress::-moz-progress-bar {
-  background: linear-gradient(90deg, var(--teal), var(--gold));
-  border-radius: 999px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .progress progress::-webkit-progress-value {
-    transition: none;
-  }
-}
-
-.choices {
-  border: 0;
-  display: grid;
-  gap: 0.75rem;
-  padding: 0;
-}
-
-.choice {
-  background: var(--panel);
-  border: 2px solid var(--panel-border);
-  border-radius: 0.75rem;
-  cursor: pointer;
-  display: flex;
-  gap: 0.75rem;
-  padding: 1rem;
-}
-
-.choice input {
-  accent-color: var(--teal);
-  flex: none;
-  height: 1.25rem;
-  margin-top: 0.3rem;
-  width: 1.25rem;
-}
-
-.choice:has(input:checked) {
-  background: #13283a;
-  border-color: var(--teal);
-}
-
-.choice:has(input:focus-visible) {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
-}
-
 .nav-row {
   display: flex;
   gap: 0.75rem;
@@ -488,39 +207,6 @@ html:has(.catalog-group) {
 
 .nav-row .btn {
   flex: 1;
-}
-
-/* ---- 結果 ---- */
-.type-hero {
-  text-align: center;
-}
-
-.type-hero img {
-  height: auto;
-  width: 9rem;
-}
-
-.factor-list {
-  display: grid;
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0;
-}
-
-.chip-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  list-style: none;
-  padding: 0;
-}
-
-.chip-list li {
-  background: var(--bg-2);
-  border: 1px solid var(--panel-border);
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  padding: 0.25rem 0.75rem;
 }
 
 .fade-in {
