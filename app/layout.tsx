@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Noto_Sans_JP, Shippori_Mincho } from "next/font/google"
 import Link from "next/link"
+import Script from "next/script"
 import { SITE_URL } from "@/lib/site"
 import { Footer, Header, Main } from "@/components/elements/layout"
 import "./reset.css"
@@ -58,6 +59,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             エンターテインメント目的の診断です。医療・臨床診断ではありません。
           </p>
         </Footer>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-MGQGVXD6QP"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-MGQGVXD6QP');`}
+        </Script>
       </body>
     </html>
   )
